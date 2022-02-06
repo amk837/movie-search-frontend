@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "airbnb",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "react/jsx-filename-extension": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "jsx-a11y/label-has-for": 0,
+    "import/no-named-as-default-member": 0,
+    "jsx-a11y/anchor-has-content": 0,
+    "jsx-a11y/anchor-is-valid": "warn",
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/mouse-events-have-key-events": 0,
+    "jsx-a11y/no-noninteractive-tabindex": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "max-len": ["error", { "code": 160 }],
+    "no-shadow": 0,
+    "object-curly-newline": 0,
+    "react/button-has-type": 0,
+    "react/forbid-foreign-prop-types": 0,
+    "react/no-array-index-key": 0,
+    "react/no-find-dom-node": 0,
+    "react/no-string-refs": 0,
+    "react/prefer-stateless-function": "warn",
+    "react-hooks/exhaustive-deps": 0, // Checks effect dependencies
+    "jsx-quotes": ["error", "prefer-double"],
+    "quotes": ["error", "single"]
+  }
+}
