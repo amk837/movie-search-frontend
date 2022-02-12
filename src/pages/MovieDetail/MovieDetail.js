@@ -102,7 +102,6 @@ export default function MovieDetail() {
   };
 
   useEffect(() => {
-    setMovieDetails({ loading: true });
     getMovieDetail(id).then((movieData) => {
       setMovieDetails({ ...movieData, loading: false, found: true });
     }).catch((err) => {
@@ -164,7 +163,7 @@ export default function MovieDetail() {
               <CastAndDirector castAndDirector={[movieDetails.cast, movieDetails.director]} />
             </Stack>
           </MovieDetailsContainer>
-          <MovieReviews />
+          <MovieReviews id={id} key={id} />
           <MovieList api={getSimilarMovies(id)} title="similar" />
         </>
       )}

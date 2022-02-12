@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { CircularProgress, Stack, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { number } from 'prop-types';
 import { getReviews } from '../../services/movieService';
 import CustomPagination from '../CustomPagination';
 
@@ -39,9 +39,7 @@ const MainContainer = styled(Stack)`
   align-items: center;
   justify-content: center
 `;
-export default function MovieReviews() {
-  const { id } = useParams();
-
+export default function MovieReviews({ id }) {
   const [state, setState] = useState({ loading: true, pages: 5, reviews: [] });
 
   const loadReviews = (page) => {
@@ -56,7 +54,7 @@ export default function MovieReviews() {
 
   useEffect(() => {
     loadReviews(1);
-  }, []);
+  }, [id]);
   return (
     <MainContainer>
       <HeadingContainer variant="h6">REVIEWS</HeadingContainer>
@@ -83,3 +81,11 @@ export default function MovieReviews() {
     </MainContainer>
   );
 }
+
+MovieReviews.defaultProps = {
+  id: 0,
+};
+
+MovieReviews.propTypes = {
+  id: number,
+};

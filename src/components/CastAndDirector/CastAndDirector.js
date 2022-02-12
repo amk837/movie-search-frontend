@@ -14,7 +14,7 @@ export default function CastAndDirector({ castAndDirector }) {
   return (
     <>
       {castAndDirector.map((people, index) => (
-        <DetailContainer>
+        <DetailContainer key={index}>
           <Typography color="#8e95a5" width="20%">
             {index === 0 ? 'Cast' : 'Director'}
           </Typography>
@@ -31,9 +31,9 @@ export default function CastAndDirector({ castAndDirector }) {
 }
 
 CastAndDirector.defaultProps = {
-  castAndDirector: [],
+  castAndDirector: [[]],
 };
 
 CastAndDirector.propTypes = {
-  castAndDirector: PropTypes.arrayOf(PropTypes.shape({})),
+  castAndDirector: PropTypes.arrayOf(PropTypes.array),
 };

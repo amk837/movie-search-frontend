@@ -8,12 +8,8 @@ const sendData = (api, userData) => fetch(api, {
     'Content-Type': 'application/json',
   },
 })
-  .then((res) => {
-    console.log(res);
-    return res.json();
-  })
+  .then((res) => res.json())
   .catch((err) => {
-    console.log(err);
     throw err;
   });
 

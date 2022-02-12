@@ -126,7 +126,8 @@ export const searchMoviesByDirector = (personId) => getMovies.bind(null, SEARCH_
 export const searchMoviesByGenre = (genreId) => getMovies.bind(null, SEARCH_BY_GENRE_API.replace('id', genreId));
 
 export const getGenres = async () => {
-  const genres = await (await fetch(GET_GENRES_API)).json();
+  const res = (await fetch(GET_GENRES_API));
+  const genres = await res.json();
   return genres;
 };
 
