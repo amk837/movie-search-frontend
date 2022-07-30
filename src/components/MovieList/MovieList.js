@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import PropTypes, { bool } from 'prop-types';
 import styled from '@emotion/styled';
 import { CircularProgress, Typography } from '@mui/material';
 import MovieCard from '../MovieCard';
@@ -36,10 +36,10 @@ const TitleContainer = styled(Typography)`
   border-radius: 5px;
 `;
 
-function MovieList({ api, title, moviesList }) {
+function MovieList({ api, title, moviesList, showLoader }) {
   const [movies, setMovies] = useState(moviesList || []);
   const [totalPages, setTotalPages] = useState(moviesList ? moviesList.length : 0);
-  const [isLoading, setIsLoading] = useState(moviesList === null);
+  const [isLoading, setIsLoading] = useState(showLoader);
 
   const loadMovies = (page) => {
     if (!isLoading) {
@@ -67,6 +67,13 @@ function MovieList({ api, title, moviesList }) {
     }
     return () => {};
   }, [api]);
+
+  useEffect(() => {
+    if (isLoading === showLoader) return;
+
+    setIsLoading(showLoader);
+  }, [showLoader]);
+
   return (
     <Container>
       {!movieTypes.includes(title) ? (
@@ -100,12 +107,14 @@ MovieList.defaultProps = {
   api: () => {},
   title: '',
   moviesList: null,
+  showLoader: false,
 };
 
 MovieList.propTypes = {
   api: PropTypes.func,
   title: PropTypes.string,
   moviesList: PropTypes.arrayOf(PropTypes.shape({})),
+  showLoader: bool,
 };
 
 export default MovieList;

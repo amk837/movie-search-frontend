@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MovieList from '../../components/MovieList';
 import FavoritesContext from '../../context/FavoritesContext';
@@ -8,6 +8,7 @@ import { getFavorites } from '../../services/movieService';
 
 export default function FavoritesPage() {
   const { favoriteMovies, setFavorites } = useContext(FavoritesContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   const token = useSelector(getToken);
 
@@ -17,8 +18,9 @@ export default function FavoritesPage() {
 
   useEffect(async () => {
     const { favorites } = await useTokenService(getFavorites, token, refreshToken, dispatch);
-    setFavorites(() => favorites);
+    setFavorites(favorites);
+    setIsLoading(false);
   }, []);
 
-  return <MovieList key={favoriteMovies} moviesList={favoriteMovies} title="favorite" />;
+  return <MovieList key={favoriteMovies} showLoader={isLoading} moviesList={favoriteMovies} title="favorite" />;
 }

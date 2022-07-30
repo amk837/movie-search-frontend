@@ -9,7 +9,7 @@ const StyledPagination = styled(Pagination)`
   .MuiPagination-textPrimary {
     color: white;
   }
-  .css-1bfr02t { 
+  .MuiButtonBase-root { 
     color: white;
   }
 `;

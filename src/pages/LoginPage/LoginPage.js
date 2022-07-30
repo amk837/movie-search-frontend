@@ -58,7 +58,7 @@ function LoginPage() {
 
     if (token && refreshToken) {
       dispatch(setToken(token, refreshToken));
-      nav('/home', { replace: true });
+      nav(ROUTES.home, { replace: true });
       return;
     }
 

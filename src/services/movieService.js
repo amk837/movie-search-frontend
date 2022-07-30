@@ -23,7 +23,7 @@ const defaultHeader = {
   'Content-Type': 'application/json',
 };
 
-const getHeaders = (token = null) => (token ? defaultHeader : { ...defaultHeader, Authorization: `BEARER ${token}` });
+const getHeaders = (token = null) => (!token ? defaultHeader : { ...defaultHeader, Authorization: `BEARER ${token}` });
 
 const extractData = (movie) => ({
   img: movie.poster_path && `${IMAGE_API_BASE}/w500${movie.poster_path}`,
