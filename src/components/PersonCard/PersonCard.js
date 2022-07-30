@@ -33,7 +33,7 @@ const Title = styled(Typography)`
 export default function PersonCard({ name, character, img, href }) {
   return (
     <Card to={href}>
-      <Image src={img} alt={name} />
+      <Image src={img || '/movie-image-placeholder.png'} alt={name} />
 
       <Title variant="subtitle2" title={name}>
         {name}

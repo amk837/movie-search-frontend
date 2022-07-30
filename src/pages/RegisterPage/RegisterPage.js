@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material';
 import { React, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextFieldsGenerator from '../../components/TextFieldsGenerator';
+import { ROUTES } from '../../constants';
 import { register } from '../../services/authService';
 
 const StyledButton = styled(Button, {})`
@@ -59,7 +60,7 @@ function RegisterPage() {
     } else {
       const response = await register(formData);
       if (response.email) {
-        nav('/login', { replace: true });
+        nav(ROUTES.login, { replace: true });
       } else {
         setErrorMessage('User with this email already exists');
       }

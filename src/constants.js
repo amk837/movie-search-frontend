@@ -32,3 +32,19 @@ export const ADD_TO_FAVORITES_API = `${FAVORITES_API_BASE}/addToFavorites`;
 export const GET_FAVORITES_API = `${FAVORITES_API_BASE}/getFavorites`;
 
 export const REMOVE_FROM_FAVORITES_API = `${FAVORITES_API_BASE}/removeFromFavorites`;
+
+export const ROUTES = {
+  login: '/login',
+  register: '/register',
+  latest: '/latest',
+  topRated: '/top_rated',
+  popular: '/popular',
+  movieDetail: (id = ':id') => `/movie/${id}`,
+  home: '/',
+  search: '/search',
+  actorMovies: (query = ':query', name = ':name') => `/actor/${query}/${name}`,
+  directorMovies: (query = ':query', name = ':name') => `/director/${query}/${name}`,
+  genreMovies: (query = ':query', name = ':name') => `/genre/${query}/${name}`,
+  favorites: '/favorites',
+  rest: '*',
+};

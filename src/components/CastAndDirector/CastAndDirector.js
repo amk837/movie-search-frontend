@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Stack, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
+import { arrayOf, shape } from 'prop-types';
 import React from 'react';
 import PersonCard from '../PersonCard/PersonCard';
 
@@ -35,5 +35,5 @@ CastAndDirector.defaultProps = {
 };
 
 CastAndDirector.propTypes = {
-  castAndDirector: PropTypes.arrayOf(PropTypes.array),
+  castAndDirector: arrayOf(arrayOf(shape({}))),
 };

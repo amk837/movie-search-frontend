@@ -16,11 +16,18 @@ import {
   GET_FAVORITES_API,
   ADD_TO_FAVORITES_API,
   REMOVE_FROM_FAVORITES_API,
+  ROUTES,
 } from '../constants';
 
+const defaultHeader = {
+  'Content-Type': 'application/json',
+};
+
+const getHeaders = (token = null) => (token ? defaultHeader : { ...defaultHeader, Authorization: `BEARER ${token}` });
+
 const extractData = (movie) => ({
-  img: `${IMAGE_API_BASE}/w500${movie.poster_path}`,
-  href: `/movie/${movie.id}`,
+  img: movie.poster_path && `${IMAGE_API_BASE}/w500${movie.poster_path}`,
+  href: ROUTES.movieDetail(movie.id),
   title: movie.title,
   id: movie.id,
   genres: movie.genres,
@@ -35,7 +42,7 @@ const getMovies = async (api, page = 1) => {
     const movies = await (await fetch(`${api}${page}`)).json();
     return {
       pages: movies.total_pages,
-      movies: movies.results.map((movie) => extractData(movie)),
+      movies: movies.results.map(extractData),
       page: movies.page,
     };
   } catch (error) {
@@ -57,16 +64,16 @@ export const getMovieDetail = async (id) => {
   const [cast, director] = [
     movieCast.cast.map(({ name, profile_path, character, id }) => ({
       name,
-      img: `${IMAGE_API_BASE}/w185${profile_path}`,
+      img: profile_path && `${IMAGE_API_BASE}/w185${profile_path}`,
       character,
-      href: `/actor/${id}/${name}`,
+      href: ROUTES.actorMovies(id, name),
     })),
     movieCast.crew
       .filter((person) => person.job === 'Director')
       .map(({ name, profile_path, id }) => ({
         name,
-        img: `${IMAGE_API_BASE}/w185${profile_path}`,
-        href: `/director/${id}/${name}`,
+        img: profile_path && `${IMAGE_API_BASE}/w185${profile_path}`,
+        href: ROUTES.directorMovies(id, name),
       })),
   ];
   return {
@@ -107,9 +114,7 @@ export const searchMovies = (filters) => async (page) => {
     await fetch(SEARCH_MOVIES_API, {
       method: 'SEARCH',
       body: JSON.stringify({ ...filters, page }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getHeaders(),
     })
   ).json();
   return {
@@ -133,9 +138,7 @@ export const getGenres = async () => {
 
 export const getFavorites = async (token) => {
   const res = await fetch(GET_FAVORITES_API, {
-    headers: {
-      Authorization: `BEARER ${token}`,
-    },
+    headers: getHeaders(token),
   });
   if (res.status >= 200 && res.status <= 204) return res.json();
   throw res;
@@ -144,10 +147,7 @@ export const getFavorites = async (token) => {
 export const addToFavorites = (movie, token) => fetch(ADD_TO_FAVORITES_API, {
   method: 'POST',
   body: JSON.stringify({ movie }),
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `BEARER ${token}`,
-  },
+  headers: getHeaders(token),
 })
   .then((res) => res.json())
   .catch((err) => {
@@ -157,10 +157,7 @@ export const addToFavorites = (movie, token) => fetch(ADD_TO_FAVORITES_API, {
 export const removeFromFavorites = (movieId, token) => fetch(REMOVE_FROM_FAVORITES_API, {
   method: 'DELETE',
   body: JSON.stringify({ movieId }),
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `BEARER ${token}`,
-  },
+  headers: getHeaders(token),
 })
   .then((res) => res.json())
   .catch((err) => {

@@ -4,6 +4,7 @@ import { React, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import TextFieldsGenerator from '../../components/TextFieldsGenerator';
+import { ROUTES } from '../../constants';
 import { setToken } from '../../redux/nodes/entities/user/actions';
 import { login } from '../../services/authService';
 
@@ -76,7 +77,7 @@ function LoginPage() {
         <StyledButton variant="contained" type="submit">Log in</StyledButton>
       </FormContainer>
 
-      <Link to="/register">No account?</Link>
+      <Link to={ROUTES.register}>No account?</Link>
     </Container>
   );
 }

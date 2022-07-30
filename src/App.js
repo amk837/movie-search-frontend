@@ -1,6 +1,7 @@
 import { React } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar';
+import { ROUTES } from './constants';
 import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
 import HomePage from './pages/HomePage';
 import LatestMovies from './pages/LatestMovies/LatestMovies';
@@ -18,19 +19,19 @@ function App() {
     <>
       <NavBar />
       <Routes>
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route exact path="/register" element={<RegisterPage />} />
-        <Route exact path="/latest" element={<LatestMovies />} />
-        <Route exact path="/top_rated" element={<TopRatedMovies />} />
-        <Route exact path="/popular" element={<PopularMovies />} />
-        <Route path="/movie/:id" element={<MovieDetail />} />
-        <Route exact path="/home" element={<HomePage />} />
-        <Route path="/" element={<SearchPage api={searchMovies} />} />
-        <Route path="/actor/:query/:name" element={<MoreMoviesBy api={searchMoviesByCast} />} />
-        <Route path="/director/:query/:name" element={<MoreMoviesBy api={searchMoviesByDirector} />} />
-        <Route path="/genre/:query/:name" element={<MoreMoviesBy api={searchMoviesByGenre} />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="*" element={<>404 page not found</>} />
+        <Route exact path={ROUTES.login} element={<LoginPage />} />
+        <Route exact path={ROUTES.register} element={<RegisterPage />} />
+        <Route exact path={ROUTES.latest} element={<LatestMovies />} />
+        <Route exact path={ROUTES.topRated} element={<TopRatedMovies />} />
+        <Route exact path={ROUTES.popular} element={<PopularMovies />} />
+        <Route path={ROUTES.movieDetail()} element={<MovieDetail />} />
+        <Route exact path={ROUTES.home} element={<HomePage />} />
+        <Route path={ROUTES.search} element={<SearchPage api={searchMovies} />} />
+        <Route path={ROUTES.actorMovies()} element={<MoreMoviesBy api={searchMoviesByCast} />} />
+        <Route path={ROUTES.directorMovies()} element={<MoreMoviesBy api={searchMoviesByDirector} />} />
+        <Route path={ROUTES.genreMovies()} element={<MoreMoviesBy api={searchMoviesByGenre} />} />
+        <Route path={ROUTES.favorites} element={<FavoritesPage />} />
+        <Route path={ROUTES.rest} element={<>404 page not found</>} />
       </Routes>
     </>
   );
