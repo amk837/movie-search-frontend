@@ -129,7 +129,7 @@ export default function MovieDetail() {
                 <Icon src="/text.png" alt="runtime" title="duration" />
                 <Typography variant="h6" margin="10px">{movieDetails.runtime}</Typography>
               </DetailContainer>
-              { isLoggedIn && (
+              {isLoggedIn && (
                 <DetailContainer>
                   <FavoriteBoxContainer
                     disabled={isUpdating}

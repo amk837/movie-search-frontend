@@ -34,6 +34,7 @@
     "react/prefer-stateless-function": "warn",
     "react-hooks/exhaustive-deps": 0, // Checks effect dependencies
     "jsx-quotes": ["error", "prefer-double"],
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "linebreak-style": ["error", "unix"]
   }
 }

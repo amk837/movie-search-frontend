@@ -188,7 +188,7 @@ export default function SearchFilters({ filters, setFilters }) {
     });
   }, []);
 
-  const maxYear = new Date().getFullYear() + 3;
+  const maxYear = new Date().getFullYear();
 
   return (
     <FiltersContainer>

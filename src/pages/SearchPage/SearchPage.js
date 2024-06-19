@@ -79,7 +79,7 @@ export default function SearchPage({ api }) {
     genres: [],
     title: '',
     asc: -1,
-    release_date: { from: '1900', to: `${new Date().getFullYear() + 3}` },
+    release_date: { from: '1900', to: `${new Date().getFullYear()}` },
   });
 
   const onSearch = () => {
