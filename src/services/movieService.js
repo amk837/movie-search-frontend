@@ -112,7 +112,7 @@ export const getReviews = async (id, page = 1) => {
 export const searchMovies = (filters) => async (page) => {
   const movies = await (
     await fetch(SEARCH_MOVIES_API, {
-      method: 'SEARCH',
+      method: 'POST',
       body: JSON.stringify({ ...filters, page }),
       headers: getHeaders(),
     })
