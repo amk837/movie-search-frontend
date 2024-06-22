@@ -14,15 +14,12 @@ import React, { useEffect, useState } from 'react';
 import { getGenres } from '../../services/movieService';
 
 const FiltersContainer = styled(Stack)`
-  flex-direction: row;
   width: 78.5%;
+  padding: 16px;
   background: #2f3441;
   color: #ddd;
   margin: 20px;
   border-radius: 10px;
-  .MuiTypography-root {
-    font-size: 1.5vw;
-  }
 `;
 
 const FilterContainer = styled(Stack)`
@@ -83,13 +80,6 @@ const DropDown = styled(Select)`
 `;
 
 const CheckBoxContainer = styled(FormControlLabel)`
-  width: 100%;
-  @media screen and (min-width: 1100px) {
-    width: 50%;
-  }
-  @media screen and (min-width: 1300px) {
-    width: 33%;
-  }
   margin: 0px;
   .MuiFormControlLabel-label {
     font-size: 1vw;
@@ -192,90 +182,92 @@ export default function SearchFilters({ filters, setFilters }) {
 
   return (
     <FiltersContainer>
-      <FilterContainer width="15">
-        <FilterHeading>Sort By</FilterHeading>
+      <Stack direction={{ sm: 'column', md: 'row' }} width="100%">
+        <FilterContainer width={{ sm: '100', md: '25' }}>
+          <FilterHeading variant="h4">Sort By</FilterHeading>
 
-        {sortByFilters.map(([filterName, filterTitle, Icon]) => (
-          <RowContainer key={filterName}>
-            <SortByFilterContainer
-              selected={filters.sortBy === filterName}
-              onMouseEnter={onSortByHover(filterName)}
-              onMouseLeave={onSortByHoverExit}
-              onClick={onSortByChange(filterName)}
-            >
-              <Icon style={{ height: '100%' }} />
+          {sortByFilters.map(([filterName, filterTitle, Icon]) => (
+            <RowContainer key={filterName}>
+              <SortByFilterContainer
+                selected={filters.sortBy === filterName}
+                onMouseEnter={onSortByHover(filterName)}
+                onMouseLeave={onSortByHoverExit}
+                onClick={onSortByChange(filterName)}
+              >
+                <Icon style={{ height: '100%' }} />
 
-              <SortByLabel>{filterTitle}</SortByLabel>
-            </SortByFilterContainer>
+                <SortByLabel>{filterTitle}</SortByLabel>
+              </SortByFilterContainer>
 
-            <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />
-          </RowContainer>
-        ))}
+              <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />
+            </RowContainer>
+          ))}
 
-        <RowContainer>
-          <FormControlLabel
-            style={{ marginLeft: '5px' }}
-            control={(
-              <FormControlLabel
-                style={{ margin: '10px' }}
-                control={<Switch checked={filters.asc === -1} onChange={onSortModeChange} />}
-                label="Desc"
-              />
+          <RowContainer>
+            <FormControlLabel
+              style={{ marginLeft: '5px' }}
+              control={(
+                <FormControlLabel
+                  style={{ margin: '10px' }}
+                  control={<Switch checked={filters.asc === -1} onChange={onSortModeChange} />}
+                  label="Desc"
+                />
             )}
-            label="Asc"
-            labelPlacement="start"
-          />
-        </RowContainer>
-      </FilterContainer>
+              label="Asc"
+              labelPlacement="start"
+            />
+          </RowContainer>
+        </FilterContainer>
 
-      <FilterContainer width="15">
-        <FilterHeading>Rating</FilterHeading>
-        <DropDown value={`${filters.rating}`} onChange={onRatingChange}>
-          {ratingRanges.map(([min, max], index) => (
-            <MenuItem key={index} value={index}>
-              {`${min}-${max}`}
-            </MenuItem>
-          ))}
-        </DropDown>
-      </FilterContainer>
+        <FilterContainer width={{ sm: '100', md: '25' }}>
+          <FilterHeading>Rating</FilterHeading>
+          <DropDown value={`${filters.rating}`} onChange={onRatingChange}>
+            {ratingRanges.map(([min, max], index) => (
+              <MenuItem key={index} value={index}>
+                {`${min}-${max}`}
+              </MenuItem>
+            ))}
+          </DropDown>
+        </FilterContainer>
 
-      <FilterContainer width="15">
-        <FilterHeading>Popularity</FilterHeading>
+        <FilterContainer width={{ sm: '100', md: '25' }}>
+          <FilterHeading>Popularity</FilterHeading>
 
-        <DropDown value={`${filters.popularity}`} onChange={onPopularityChange}>
-          {popularityRanges.map(([min, max], index) => (
-            <MenuItem key={(index + 1) * 1000} value={index}>
-              {`${min}-${max}`}
-            </MenuItem>
-          ))}
-        </DropDown>
-      </FilterContainer>
+          <DropDown value={`${filters.popularity}`} onChange={onPopularityChange}>
+            {popularityRanges.map(([min, max], index) => (
+              <MenuItem key={(index + 1) * 1000} value={index}>
+                {`${min}-${max}`}
+              </MenuItem>
+            ))}
+          </DropDown>
+        </FilterContainer>
 
-      <FilterContainer width="15">
-        <FilterHeading>Year</FilterHeading>
+        <FilterContainer width={{ sm: '100', md: '25' }}>
+          <FilterHeading>Year</FilterHeading>
 
-        <YearLabel>From</YearLabel>
+          <YearLabel>From</YearLabel>
 
-        <DropDown value={filters.release_date.from} onChange={onYearChange} name="from">
-          {Array.from(Array(maxYear - 1899)).map((value, index) => (
-            <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
-              {maxYear - index}
-            </MenuItem>
-          ))}
-        </DropDown>
+          <DropDown value={filters.release_date.from} onChange={onYearChange} name="from">
+            {Array.from(Array(maxYear - 1899)).map((value, index) => (
+              <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
+                {maxYear - index}
+              </MenuItem>
+            ))}
+          </DropDown>
 
-        <YearLabel>To</YearLabel>
+          <YearLabel>To</YearLabel>
 
-        <DropDown value={filters.release_date.to} onChange={onYearChange} name="to">
-          {Array.from(Array(maxYear - 1899)).map((value, index) => (
-            <MenuItem key={maxYear - index} value={maxYear - index}>
-              {maxYear - index}
-            </MenuItem>
-          ))}
-        </DropDown>
-      </FilterContainer>
+          <DropDown value={filters.release_date.to} onChange={onYearChange} name="to">
+            {Array.from(Array(maxYear - 1899)).map((value, index) => (
+              <MenuItem key={maxYear - index} value={maxYear - index}>
+                {maxYear - index}
+              </MenuItem>
+            ))}
+          </DropDown>
+        </FilterContainer>
+      </Stack>
 
-      <FilterContainer width="40">
+      <FilterContainer width={{ sm: '100', md: '25' }}>
         <FilterHeading variant="h5">Genres</FilterHeading>
 
         <GenresContainer>
