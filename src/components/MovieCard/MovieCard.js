@@ -6,11 +6,17 @@ import { Link } from 'react-router-dom';
 
 const Card = styled(Link)`
   width: 20%;
+  height: 25vw;
   text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media (max-width:600px) {
+    width: 200px;
+    height: 300px;
+    flex-shrink: 0;
+  }
 `;
 
 const Image = styled.img`
@@ -26,14 +32,13 @@ const Title = styled(Typography)`
   white-space: nowrap;
   color: white;
   width: 90%;
-  font-size: 1vw;
   height: 10%;
 `;
 
 export default function MovieCard({ movie: { img, title, href } }) {
   return (
     <Card to={href}>
-      <Image src={img} alt={title} />
+      <Image src={img || '/movie-image-placeholder.png'} alt={title} />
 
       <Title title={title}>{title}</Title>
     </Card>

@@ -2,43 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes, { bool } from 'prop-types';
 import styled from '@emotion/styled';
-import { CircularProgress, Typography } from '@mui/material';
+import { Stack, Typography, useMediaQuery } from '@mui/material';
 import MovieCard from '../MovieCard';
 import CustomPagination from '../CustomPagination';
+import MovieCardSkeleton from '../MovieCard/skeleton';
+import { MEDIA_QUERIES } from '../../constants';
 
 const Container = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
   .MuiPagination-textPrimary {
     color: white;
   }
   .css-1bfr02t { 
     color: white;
   }
-`;
 
-const MoviesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 80%;
-  margin: auto;
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 0px 16px;
+  }
 `;
 
 const TitleContainer = styled(Typography)`
   margin: 10px;
-  margin-left: 1.25%;
   color: #00acc1;
   text-align: left;
   border-radius: 5px;
 `;
 
+const DUMMY_CARDS = Array(20).fill(0).map((_, index) => index);
+
 function MovieList({ api, title, moviesList, showLoader }) {
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
+
   const [movies, setMovies] = useState(moviesList || []);
   const [totalPages, setTotalPages] = useState(moviesList ? moviesList.length : 0);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(showLoader);
 
   const loadMovies = (page) => {
@@ -46,6 +48,7 @@ function MovieList({ api, title, moviesList, showLoader }) {
       setIsLoading(true);
     }
 
+    setPage(page);
     api(page).then((data) => {
       setMovies(data.movies);
       setTotalPages(data.pages);
@@ -81,24 +84,32 @@ function MovieList({ api, title, moviesList, showLoader }) {
           {`${title.toUpperCase().replaceAll('_', ' ')} MOVIES`}
         </TitleContainer>
       ) : (
-        <Link to={`/${title}`} style={{ textDecoration: 'none', width: '80%', margin: 'auto' }}>
+        <Link to={`/${title}`} style={{ textDecoration: 'none' }}>
           <TitleContainer variant="h6">{`${title.toUpperCase().replaceAll('_', ' ')} MOVIES`}</TitleContainer>
         </Link>
       )}
 
-      {isLoading && <CircularProgress />}
-
-      {!isLoading && totalPages > 0 ? (
-        <MoviesContainer>
-          {movies.map((movie) => (
+      <Stack direction="row" flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
+        {isLoading || !movies.length ? (
+          DUMMY_CARDS.map((key) => <MovieCardSkeleton key={key} />)
+        ) : (
+          movies.map((movie) => (
             <MovieCard movie={movie} key={movie.id} />
-          ))}
-        </MoviesContainer>
-      ) : (
-        !isLoading && <Typography color="white">No movies found</Typography>
-      )}
+          ))
+        )}
+      </Stack>
 
-      {!moviesList && totalPages > 0 && <CustomPagination pages={totalPages} onPageChange={onPageChange} />}
+      {!isLoading && !movies.length ? <Typography color="white">No movies found</Typography> : null}
+
+      <Stack alignItems="center" pt={2}>
+        {totalPages > 0 ? (
+          <CustomPagination
+            pages={totalPages}
+            onPageChange={onPageChange}
+            page={page}
+          />
+        ) : null}
+      </Stack>
     </Container>
   );
 }

@@ -48,3 +48,7 @@ export const ROUTES = {
   favorites: '/favorites',
   rest: '*',
 };
+
+export const MEDIA_QUERIES = {
+  isMobile: '(max-width:600px)',
+};

@@ -2,15 +2,16 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import React, { useRef, useState } from 'react';
 import {
-  Autocomplete,
   Button,
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material/';
-import SearchIcon from '@mui/icons-material/Search';
+import { Search } from '@mui/icons-material';
 import MovieList from '../../components/MovieList';
 import SearchFilters from '../../components/SearchFilters';
+import { MEDIA_QUERIES } from '../../constants';
 
 const SimpleTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -29,8 +30,6 @@ const SimpleTextField = styled(TextField)({
     '&.Mui-focused fieldset': {
       border: '0px',
     },
-    height: '100%',
-    fontSize: '150%',
   },
 });
 
@@ -40,20 +39,18 @@ const MainContainer = styled(Stack)`
   color: #00acc1;
 `;
 
-const SearchBar = styled(Autocomplete)`
-  width: 70%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border-radius: 10px 0px 0px 10px;
-`;
+// const SearchBar = styled(Autocomplete)`
+//   width: 70%;
+//   height: 100%;
+//   align-items: center;
+//   justify-content: center;
+//   background: white;
+//   border-radius: 10px 0px 0px 10px;
+// `;
 
 const SearchButton = styled(Button)`
   background: #00acc1;
   color: white;
-  width: 15%;
-  height: 100%;
   border-radius: 0px 10px 10px 0px;
   &: hover {
     background: #00acc1;
@@ -61,16 +58,10 @@ const SearchButton = styled(Button)`
   }
 `;
 
-const SearchBarContainer = styled(MainContainer)`
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  height: 70px;
-`;
-
 export default function SearchPage({ api }) {
   const searchBarRef = useRef();
+
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
 
   const [filters, setFilters] = useState({
     sortBy: 'release_date',
@@ -88,34 +79,24 @@ export default function SearchPage({ api }) {
 
   return (
     <MainContainer>
-      <Typography variant="h2" margin="30px">
+      <Typography variant={isMobile ? 'h3' : 'h2'} py={4}>
         Search Movies
       </Typography>
 
-      <SearchBarContainer>
-        <SearchBar
-          freeSolo
-          id="search-bar"
-          disableClearable
-          renderInput={(params) => (
-            <SimpleTextField
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...params}
-              name="query"
-              inputRef={searchBarRef}
-              onKeyDown={(event) => event.code === 'Enter' && onSearch()}
-              inputProps={{ ...params.inputProps, type: 'search' }}
-              placeholder="Search for movie"
-            />
-          )}
-          options={[]}
+      <Stack direction="row" sx={{ backgroundColor: 'white' }} borderRadius={3} width={isMobile ? '84%' : '50%'}>
+
+        <SimpleTextField
+          name="query"
+          inputRef={searchBarRef}
+          fullWidth
+          onKeyDown={(event) => event.code === 'Enter' && onSearch()}
+          placeholder="Search for movie"
         />
 
         <SearchButton onClick={onSearch}>
-          <SearchIcon style={{ width: '100%', height: '100%' }} />
+          <Search />
         </SearchButton>
-
-      </SearchBarContainer>
+      </Stack>
 
       <SearchFilters setFilters={setFilters} filters={filters} />
 

@@ -9,9 +9,11 @@ import {
   Stack,
   Switch,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getGenres } from '../../services/movieService';
+import { MEDIA_QUERIES } from '../../constants';
 
 const FiltersContainer = styled(Stack)`
   width: 78.5%;
@@ -46,7 +48,6 @@ const SortByFilterContainer = styled(Stack)`
   height: 40px;
 
   width: 90%;
-  font-size: 1vw;
   background: ${({ selected }) => (selected ? '#00acc1' : 'transparent')};
   &: hover {
     background: #00acc1;
@@ -68,9 +69,6 @@ const RowContainer = styled(Stack)`
   justify-content: flex-start;
   width: 100%;
   margin: 5px 0px;
-  .MuiTypography-root {
-    font-size: 1vw;
-  }
 `;
 
 const DropDown = styled(Select)`
@@ -82,7 +80,6 @@ const DropDown = styled(Select)`
 const CheckBoxContainer = styled(FormControlLabel)`
   margin: 0px;
   .MuiFormControlLabel-label {
-    font-size: 1vw;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -99,13 +96,10 @@ const SortByLabel = styled(Typography)`
 const YearLabel = styled(Typography)`
   width: 80%;
   text-align: center;
-  
-  &.MuiTypography-root {
-    font-size: 1vw;
-  }
 `;
 
 export default function SearchFilters({ filters, setFilters }) {
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
   const sortByFilters = [['vote_average', 'Rating', StarRate], ['release_date', 'Date', CalendarToday], ['popularity', 'Popularity', Whatshot]];
 
   const [sortByHover, setSortByHover] = useState('');
@@ -182,8 +176,8 @@ export default function SearchFilters({ filters, setFilters }) {
 
   return (
     <FiltersContainer>
-      <Stack direction={{ sm: 'column', md: 'row' }} width="100%">
-        <FilterContainer width={{ sm: '100', md: '25' }}>
+      <Stack direction={isMobile ? 'column' : 'row'} width="100%">
+        <FilterContainer width={isMobile ? '100' : '25'}>
           <FilterHeading variant="h4">Sort By</FilterHeading>
 
           {sortByFilters.map(([filterName, filterTitle, Icon]) => (
@@ -199,7 +193,7 @@ export default function SearchFilters({ filters, setFilters }) {
                 <SortByLabel>{filterTitle}</SortByLabel>
               </SortByFilterContainer>
 
-              <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />
+              {isMobile ? null : <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />}
             </RowContainer>
           ))}
 
@@ -219,8 +213,8 @@ export default function SearchFilters({ filters, setFilters }) {
           </RowContainer>
         </FilterContainer>
 
-        <FilterContainer width={{ sm: '100', md: '25' }}>
-          <FilterHeading>Rating</FilterHeading>
+        <FilterContainer width={isMobile ? '100' : '25'}>
+          <FilterHeading variant="h4">Rating</FilterHeading>
           <DropDown value={`${filters.rating}`} onChange={onRatingChange}>
             {ratingRanges.map(([min, max], index) => (
               <MenuItem key={index} value={index}>
@@ -230,8 +224,8 @@ export default function SearchFilters({ filters, setFilters }) {
           </DropDown>
         </FilterContainer>
 
-        <FilterContainer width={{ sm: '100', md: '25' }}>
-          <FilterHeading>Popularity</FilterHeading>
+        <FilterContainer width={isMobile ? '100' : '25'}>
+          <FilterHeading variant="h4">Popularity</FilterHeading>
 
           <DropDown value={`${filters.popularity}`} onChange={onPopularityChange}>
             {popularityRanges.map(([min, max], index) => (
@@ -242,8 +236,8 @@ export default function SearchFilters({ filters, setFilters }) {
           </DropDown>
         </FilterContainer>
 
-        <FilterContainer width={{ sm: '100', md: '25' }}>
-          <FilterHeading>Year</FilterHeading>
+        <FilterContainer width={isMobile ? '100' : '25'}>
+          <FilterHeading variant="h4">Year</FilterHeading>
 
           <YearLabel>From</YearLabel>
 
@@ -267,8 +261,8 @@ export default function SearchFilters({ filters, setFilters }) {
         </FilterContainer>
       </Stack>
 
-      <FilterContainer width={{ sm: '100', md: '25' }}>
-        <FilterHeading variant="h5">Genres</FilterHeading>
+      <FilterContainer width="100">
+        <FilterHeading variant="h4">Genres</FilterHeading>
 
         <GenresContainer>
           {allGenres.map((genre) => (
