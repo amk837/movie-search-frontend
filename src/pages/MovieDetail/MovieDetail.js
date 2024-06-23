@@ -45,8 +45,7 @@ const CustomLink = styled(Link)`
 
 const MovieDetailsContainer = styled(Stack)`
   flex-direction: row;
-  width: 80%;
-  margin: auto;
+  width: 100%;
 `;
 
 const FavoriteIcon = styled(Favorite)`

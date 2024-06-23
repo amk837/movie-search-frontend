@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { MIN_DESKTOP_WIDTH } from '../../constants';
 
 const Card = styled(Link)`
   width: 20%;
@@ -12,7 +13,7 @@ const Card = styled(Link)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @media (max-width:600px) {
+  @media (max-width:${MIN_DESKTOP_WIDTH}px) {
     width: 200px;
     height: 300px;
     flex-shrink: 0;

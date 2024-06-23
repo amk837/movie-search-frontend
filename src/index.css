@@ -8,11 +8,25 @@ body {
   width: 100%;
   height: 100%;
   background: #1e2129;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  box-sizing:border-box
 }
 
 html {
   width: 100%;
   height: 100%;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  
+}
+
+* {
+  box-sizing:border-box
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 code {

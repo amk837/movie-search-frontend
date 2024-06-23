@@ -94,9 +94,26 @@ const SortByLabel = styled(Typography)`
 `;
 
 const YearLabel = styled(Typography)`
-  width: 80%;
-  text-align: center;
+  width: 100px;
+  min-width: 100px;
+  text-align: right;
 `;
+
+const popularityRanges = Array.from(Array(10)).map((value, index) => [
+  index * 1000,
+  (index + 1) * 1000,
+]);
+popularityRanges.push([0, 5000]);
+popularityRanges.push([5000, 10000]);
+popularityRanges.push([0, 10000]);
+
+const ratingRanges = Array.from(Array(10)).map((value, index) => [
+  index,
+  index + 1,
+]);
+ratingRanges.push([0, 5]);
+ratingRanges.push([5, 10]);
+ratingRanges.push([0, 10]);
 
 export default function SearchFilters({ filters, setFilters }) {
   const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
@@ -104,22 +121,6 @@ export default function SearchFilters({ filters, setFilters }) {
 
   const [sortByHover, setSortByHover] = useState('');
   const [allGenres, setAllGenres] = useState(['Action']);
-
-  const popularityRanges = Array.from(Array(10)).map((value, index) => [
-    index * 1000,
-    (index + 1) * 1000,
-  ]);
-  popularityRanges.push([0, 5000]);
-  popularityRanges.push([5000, 10000]);
-  popularityRanges.push([0, 10000]);
-
-  const ratingRanges = Array.from(Array(10)).map((value, index) => [
-    index,
-    index + 1,
-  ]);
-  ratingRanges.push([0, 5]);
-  ratingRanges.push([5, 10]);
-  ratingRanges.push([0, 10]);
 
   const onSortByChange = (field) => () => {
     setFilters({ ...filters, sortBy: field });
@@ -239,25 +240,30 @@ export default function SearchFilters({ filters, setFilters }) {
         <FilterContainer width={isMobile ? '100' : '25'}>
           <FilterHeading variant="h4">Year</FilterHeading>
 
-          <YearLabel>From</YearLabel>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <YearLabel>From</YearLabel>
 
-          <DropDown value={filters.release_date.from} onChange={onYearChange} name="from">
-            {Array.from(Array(maxYear - 1899)).map((value, index) => (
-              <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
-                {maxYear - index}
-              </MenuItem>
-            ))}
-          </DropDown>
+            <DropDown value={filters.release_date.from} onChange={onYearChange} name="from">
+              {Array.from(Array(maxYear - 1899)).map((value, index) => (
+                <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
+                  {maxYear - index}
+                </MenuItem>
+              ))}
+            </DropDown>
+          </Stack>
 
-          <YearLabel>To</YearLabel>
+          <Stack direction="row" spacing={2} pt={1} alignItems="center">
+            <YearLabel>To</YearLabel>
 
-          <DropDown value={filters.release_date.to} onChange={onYearChange} name="to">
-            {Array.from(Array(maxYear - 1899)).map((value, index) => (
-              <MenuItem key={maxYear - index} value={maxYear - index}>
-                {maxYear - index}
-              </MenuItem>
-            ))}
-          </DropDown>
+            <DropDown value={filters.release_date.to} onChange={onYearChange} name="to" autoWidth>
+              {Array.from(Array(maxYear - 1899)).map((value, index) => (
+                <MenuItem key={maxYear - index} value={maxYear - index}>
+                  {maxYear - index}
+                </MenuItem>
+              ))}
+            </DropDown>
+          </Stack>
+
         </FilterContainer>
       </Stack>
 

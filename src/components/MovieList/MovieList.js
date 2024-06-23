@@ -9,8 +9,7 @@ import MovieCardSkeleton from '../MovieCard/skeleton';
 import { MEDIA_QUERIES } from '../../constants';
 
 const Container = styled.div`
-  width: 80%;
-  margin: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   .MuiPagination-textPrimary {
@@ -18,11 +17,6 @@ const Container = styled.div`
   }
   .css-1bfr02t { 
     color: white;
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-    padding: 0px 16px;
   }
 `;
 
@@ -80,7 +74,7 @@ function MovieList({ api, title, moviesList, showLoader }) {
   return (
     <Container>
       {!movieTypes.includes(title) ? (
-        <TitleContainer variant="h6" style={{ alignSelf: 'flex-start', marginLeft: '10.75%' }}>
+        <TitleContainer variant="h6" style={{ alignSelf: 'flex-start' }}>
           {`${title.toUpperCase().replaceAll('_', ' ')} MOVIES`}
         </TitleContainer>
       ) : (
@@ -101,7 +95,7 @@ function MovieList({ api, title, moviesList, showLoader }) {
 
       {!isLoading && !movies.length ? <Typography color="white">No movies found</Typography> : null}
 
-      <Stack alignItems="center" pt={2}>
+      <Stack alignItems="center" pt={2} pb={3}>
         {totalPages > 0 ? (
           <CustomPagination
             pages={totalPages}

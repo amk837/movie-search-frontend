@@ -10,26 +10,18 @@ import { getRefreshToken, verifyAuth } from '../../redux/nodes/entities/user/sel
 import { logout } from '../../services/authService';
 
 const Container = styled.div`
-  width: 80%;
+  width: 100%;
   height: 50px;
-  margin: auto;
   display: flex;
   flex-direction: row;
   color: #8e95a5;
   align-items: center;
-  .MuiTypography-root {
-    font-size: 1vw;
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-    padding: 0px 16px;
-  }
 `;
 
 const Separator = styled.div`
   height: 25px;
   width: 100vw;
+  align-self: center;
   background: linear-gradient(to bottom, #0b0d14, #1e2129);
 `;
 
@@ -77,7 +69,7 @@ export default function NavBar() {
     });
   };
   return (
-    <Stack alignItems="center">
+    <Stack width="100%">
       <Container>
         <LogoContainer>
           <StyledLink to={ROUTES.search}>Search Movies</StyledLink>

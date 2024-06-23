@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Skeleton } from '@mui/material';
 import React from 'react';
+import { MIN_DESKTOP_WIDTH } from '../../constants';
 
 const Card = styled.div`
   width: 20%;
@@ -10,6 +11,11 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media (max-width:${MIN_DESKTOP_WIDTH}px) {
+    width: 200px;
+    height: 300px;
+    flex-shrink: 0;
+  }
 `;
 
 const Image = styled.div`

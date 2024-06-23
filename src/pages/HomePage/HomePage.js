@@ -6,7 +6,7 @@ import TopRatedMovies from '../TopRatedMovies';
 
 export default function HomePage() {
   return (
-    <Stack pb={4}>
+    <Stack>
       <LatestMovies />
       <TopRatedMovies />
       <PopularMovies />
