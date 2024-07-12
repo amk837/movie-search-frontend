@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import { Button, Stack, useMediaQuery } from '@mui/material';
-import React, { useContext } from 'react';
+import { Button, Drawer, IconButton, Stack, useMediaQuery } from '@mui/material';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Menu } from '@mui/icons-material';
 import { MEDIA_QUERIES, ROUTES } from '../../constants';
 import FavoritesContext from '../../context/FavoritesContext';
 import { clearToken } from '../../redux/nodes/entities/user/actions';
@@ -56,18 +57,55 @@ const LogoContainer = styled.div``;
 export default function NavBar() {
   const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
 
+  const [showDrawer, setShowDrawer] = useState(false);
+
   const isLoggedIn = useSelector(verifyAuth);
   const refreshToken = useSelector(getRefreshToken);
 
   const { setFavorites } = useContext(FavoritesContext);
 
   const dispatch = useDispatch();
+
+  const toggleDrawer = () => {
+    setShowDrawer(!showDrawer);
+  };
   const onLogout = () => {
     logout(refreshToken).then(() => {
       dispatch(clearToken);
       setFavorites(() => []);
     });
   };
+
+  const renderAuthButton = () => (!isLoggedIn ? (
+    <>
+      {!isMobile ? <StyledLink to={ROUTES.favorites} onClick={toggleDrawer}>My Favorites</StyledLink> : null}
+
+      <CustomButton variant="outlined" onClick={onLogout}>Logout</CustomButton>
+
+      {isMobile ? <StyledLink to={ROUTES.favorites} onClick={toggleDrawer}>My Favorites</StyledLink> : null}
+    </>
+  ) : (
+    <Link to={ROUTES.login} onClick={toggleDrawer} style={{ textDecoration: 'none' }}>
+      <CustomButton variant="outlined">Login</CustomButton>
+    </Link>
+  ));
+
+  const renderLinks = () => (
+    <>
+      {isMobile ? renderAuthButton() : null }
+
+      <StyledLink to={ROUTES.home} onClick={toggleDrawer}>Home</StyledLink>
+
+      <StyledLink to={ROUTES.latest} onClick={toggleDrawer}>Latest</StyledLink>
+
+      <StyledLink to={ROUTES.popular} onClick={toggleDrawer}>Popular</StyledLink>
+
+      <StyledLink to={ROUTES.topRated} onClick={toggleDrawer}>Top Rated</StyledLink>
+
+      {!isMobile ? renderAuthButton() : null }
+
+    </>
+  );
   return (
     <Stack width="100%">
       <Container>
@@ -75,32 +113,26 @@ export default function NavBar() {
           <StyledLink to={ROUTES.search}>Search Movies</StyledLink>
         </LogoContainer>
         <LinksContainer>
-          {isMobile ? null : (
-            <>
-              <StyledLink to={ROUTES.home}>Home</StyledLink>
-
-              <StyledLink to={ROUTES.latest}>Latest</StyledLink>
-
-              <StyledLink to={ROUTES.popular}>Popular</StyledLink>
-
-              <StyledLink to={ROUTES.topRated}>Top Rated</StyledLink>
-            </>
-          )}
-
-          {isLoggedIn ? (
-            <>
-              {isMobile ? null : <StyledLink to={ROUTES.favorites}>My Favorites</StyledLink>}
-
-              <CustomButton variant="outlined" onClick={onLogout}>Logout</CustomButton>
-            </>
+          {isMobile ? (
+            <IconButton onClick={toggleDrawer}>
+              <Menu color="primary" fontSize="large" />
+            </IconButton>
           ) : (
-            <Link to={ROUTES.login} style={{ textDecoration: 'none' }}>
-              <CustomButton variant="outlined">Login</CustomButton>
-            </Link>
+            renderLinks()
           )}
+
         </LinksContainer>
       </Container>
       <Separator />
+
+      <Drawer open={showDrawer} onClose={toggleDrawer} anchor="right">
+        <Stack alignItems="center" pt={2} px={2}>
+          <IconButton onClick={toggleDrawer}>
+            <Menu fontSize="large" />
+          </IconButton>
+          {renderLinks()}
+        </Stack>
+      </Drawer>
     </Stack>
   );
 }

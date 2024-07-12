@@ -84,7 +84,7 @@ export default function SearchPage({ api }) {
         Search Movies
       </Typography>
 
-      <Stack direction="row" sx={{ backgroundColor: 'white' }} borderRadius={3} width={isMobile ? '84%' : '50%'}>
+      <Stack direction="row" sx={{ backgroundColor: 'white' }} borderRadius={3} width={isMobile ? '100%' : '50%'}>
 
         <SimpleTextField
           name="query"

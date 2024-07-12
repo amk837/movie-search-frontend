@@ -16,25 +16,13 @@ import { getGenres } from '../../services/movieService';
 import { MEDIA_QUERIES } from '../../constants';
 
 const FiltersContainer = styled(Stack)`
-  padding: 16px;
   background: #2f3441;
   color: #ddd;
-  margin: 10px;
   border-radius: 10px;
 `;
 
 const FilterContainer = styled(Stack)`
   width: ${({ width }) => width || 20}%;
-  align-content: center;
-  padding: 20px 10px;
-`;
-
-const GenresContainer = styled(Stack)`
-  width: 100%;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-self: center;
 `;
 
 const FilterHeading = styled(Typography)`
@@ -175,27 +163,29 @@ export default function SearchFilters({ filters, setFilters }) {
   const maxYear = new Date().getFullYear();
 
   return (
-    <FiltersContainer>
+    <FiltersContainer mt={2} p={2}>
       <Stack direction={isMobile ? 'column' : 'row'} width="100%">
         <FilterContainer width={isMobile ? '100' : '25'}>
-          <FilterHeading variant="h4">Sort By</FilterHeading>
+          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Sort By</FilterHeading>
 
-          {sortByFilters.map(([filterName, filterTitle, Icon]) => (
-            <RowContainer key={filterName}>
-              <SortByFilterContainer
-                selected={filters.sortBy === filterName}
-                onMouseEnter={onSortByHover(filterName)}
-                onMouseLeave={onSortByHoverExit}
-                onClick={onSortByChange(filterName)}
-              >
-                <Icon style={{ height: '100%' }} />
+          <Stack direction={isMobile ? 'row' : 'column'}>
+            {sortByFilters.map(([filterName, filterTitle, Icon]) => (
+              <RowContainer key={filterName}>
+                <SortByFilterContainer
+                  selected={filters.sortBy === filterName}
+                  onMouseEnter={onSortByHover(filterName)}
+                  onMouseLeave={onSortByHoverExit}
+                  onClick={onSortByChange(filterName)}
+                >
+                  <Icon style={{ height: '100%' }} />
 
-                <SortByLabel>{filterTitle}</SortByLabel>
-              </SortByFilterContainer>
+                  <SortByLabel>{filterTitle}</SortByLabel>
+                </SortByFilterContainer>
 
-              {isMobile ? null : <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />}
-            </RowContainer>
-          ))}
+                {isMobile ? null : <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />}
+              </RowContainer>
+            ))}
+          </Stack>
 
           <RowContainer>
             <FormControlLabel
@@ -213,9 +203,14 @@ export default function SearchFilters({ filters, setFilters }) {
           </RowContainer>
         </FilterContainer>
 
-        <FilterContainer width={isMobile ? '100' : '25'}>
-          <FilterHeading variant="h4">Rating</FilterHeading>
-          <DropDown value={`${filters.rating}`} onChange={onRatingChange}>
+        <FilterContainer
+          width={isMobile ? '100' : '25'}
+          direction={isMobile ? 'row' : 'column'}
+          alignItems="center"
+          justifyContent={isMobile ? 'space-between' : undefined}
+        >
+          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Rating</FilterHeading>
+          <DropDown value={`${filters.rating}`} onChange={onRatingChange} sx={{ maxWidth: 120 }}>
             {ratingRanges.map(([min, max], index) => (
               <MenuItem key={index} value={index}>
                 {`${min}-${max}`}
@@ -224,10 +219,15 @@ export default function SearchFilters({ filters, setFilters }) {
           </DropDown>
         </FilterContainer>
 
-        <FilterContainer width={isMobile ? '100' : '25'}>
-          <FilterHeading variant="h4">Popularity</FilterHeading>
+        <FilterContainer
+          width={isMobile ? '100' : '25'}
+          direction={isMobile ? 'row' : 'column'}
+          alignItems="center"
+          justifyContent={isMobile ? 'space-between' : undefined}
+        >
+          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Popularity</FilterHeading>
 
-          <DropDown value={`${filters.popularity}`} onChange={onPopularityChange}>
+          <DropDown value={`${filters.popularity}`} onChange={onPopularityChange} sx={{ maxWidth: 120 }}>
             {popularityRanges.map(([min, max], index) => (
               <MenuItem key={(index + 1) * 1000} value={index}>
                 {`${min}-${max}`}
@@ -236,40 +236,49 @@ export default function SearchFilters({ filters, setFilters }) {
           </DropDown>
         </FilterContainer>
 
-        <FilterContainer width={isMobile ? '100' : '25'}>
-          <FilterHeading variant="h4">Year</FilterHeading>
+        <FilterContainer
+          width={isMobile ? '100' : '25'}
+          direction={isMobile ? 'row' : 'column'}
+          alignItems="center"
+          justifyContent={isMobile ? 'space-between' : undefined}
+        >
+          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Year</FilterHeading>
 
-          <Stack direction="row" spacing={2} alignItems="center">
-            <YearLabel>From</YearLabel>
+          <Stack direction={isMobile ? 'row' : 'column'} alignItems="center">
+            <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end">
+              {isMobile ? null : <YearLabel>From</YearLabel>}
 
-            <DropDown value={filters.release_date.from} onChange={onYearChange} name="from">
-              {Array.from(Array(maxYear - 1899)).map((value, index) => (
-                <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
-                  {maxYear - index}
-                </MenuItem>
-              ))}
-            </DropDown>
-          </Stack>
+              <DropDown value={filters.release_date.from} onChange={onYearChange} name="from" sx={{ minWidth: 90, maxWidth: 120 }}>
+                {Array.from(Array(maxYear - 1899)).map((value, index) => (
+                  <MenuItem key={filters.release_date.to - index} value={maxYear - index}>
+                    {maxYear - index}
+                  </MenuItem>
+                ))}
+              </DropDown>
+            </Stack>
+            {isMobile ? <Typography>—</Typography> : null}
+            <Stack direction="row" spacing={isMobile ? 0 : 2} alignItems="center">
+              {isMobile ? null : <YearLabel>To</YearLabel>}
 
-          <Stack direction="row" spacing={2} pt={1} alignItems="center">
-            <YearLabel>To</YearLabel>
-
-            <DropDown value={filters.release_date.to} onChange={onYearChange} name="to" autoWidth>
-              {Array.from(Array(maxYear - 1899)).map((value, index) => (
-                <MenuItem key={maxYear - index} value={maxYear - index}>
-                  {maxYear - index}
-                </MenuItem>
-              ))}
-            </DropDown>
+              <div>
+                <DropDown value={filters.release_date.to} onChange={onYearChange} name="to" sx={{ minWidth: 90, maxWidth: 120 }}>
+                  {Array.from(Array(maxYear - 1899)).map((value, index) => (
+                    <MenuItem key={maxYear - index} value={maxYear - index}>
+                      {maxYear - index}
+                    </MenuItem>
+                  ))}
+                </DropDown>
+              </div>
+            </Stack>
           </Stack>
 
         </FilterContainer>
       </Stack>
 
-      <FilterContainer width="100">
-        <FilterHeading variant="h4">Genres</FilterHeading>
+      <FilterContainer width="100" maxWidth={window.innerWidth - 32 * 2} overflow="hidden" abc={123}>
+        <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Genres</FilterHeading>
 
-        <GenresContainer>
+        <Stack direction="row" maxWidth="100%" flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow="scroll">
           {allGenres.map((genre) => (
             <CheckBoxContainer
               key={genre}
@@ -279,7 +288,7 @@ export default function SearchFilters({ filters, setFilters }) {
             />
           ))}
 
-        </GenresContainer>
+        </Stack>
       </FilterContainer>
     </FiltersContainer>
   );
