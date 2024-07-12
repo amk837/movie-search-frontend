@@ -16,11 +16,10 @@ import { getGenres } from '../../services/movieService';
 import { MEDIA_QUERIES } from '../../constants';
 
 const FiltersContainer = styled(Stack)`
-  width: 78.5%;
   padding: 16px;
   background: #2f3441;
   color: #ddd;
-  margin: 20px;
+  margin: 10px;
   border-radius: 10px;
 `;
 

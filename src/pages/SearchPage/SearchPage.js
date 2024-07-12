@@ -63,6 +63,7 @@ export default function SearchPage({ api }) {
 
   const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
 
+  const currentYear = new Date().getFullYear();
   const [filters, setFilters] = useState({
     sortBy: 'release_date',
     rating: 12,
@@ -70,7 +71,7 @@ export default function SearchPage({ api }) {
     genres: [],
     title: '',
     asc: -1,
-    release_date: { from: '1900', to: `${new Date().getFullYear()}` },
+    release_date: { from: `${currentYear - 1}`, to: `${currentYear}` },
   });
 
   const onSearch = () => {
