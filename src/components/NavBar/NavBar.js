@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, Drawer, IconButton, Stack, useMediaQuery } from '@mui/material';
+import { Box, Button, Drawer, IconButton, Stack, useMediaQuery } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -12,15 +12,14 @@ import { logout } from '../../services/authService';
 
 const Container = styled.div`
   width: 100%;
-  height: 50px;
   display: flex;
   flex-direction: row;
   color: #8e95a5;
   align-items: center;
 `;
 
-const Separator = styled.div`
-  height: 25px;
+const Separator = styled(Box)`
+  height: 2px;
   width: 100vw;
   align-self: center;
   background: linear-gradient(to bottom, #0b0d14, #1e2129);
@@ -56,6 +55,7 @@ const CustomButton = styled(Button)`
 const LogoContainer = styled.div``;
 export default function NavBar() {
   const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
+  const isMidScreen = useMediaQuery(MEDIA_QUERIES.isMidScreen);
 
   const [showDrawer, setShowDrawer] = useState(false);
 
@@ -70,10 +70,9 @@ export default function NavBar() {
     setShowDrawer(!showDrawer);
   };
   const onLogout = () => {
-    logout(refreshToken).then(() => {
-      dispatch(clearToken);
-      setFavorites(() => []);
-    });
+    dispatch(clearToken);
+    setFavorites(() => []);
+    logout(refreshToken);
   };
 
   const renderAuthButton = () => (!isLoggedIn ? (
@@ -85,7 +84,7 @@ export default function NavBar() {
       {isMobile ? <StyledLink to={ROUTES.favorites} onClick={toggleDrawer}>My Favorites</StyledLink> : null}
     </>
   ) : (
-    <Link to={ROUTES.login} onClick={toggleDrawer} style={{ textDecoration: 'none' }}>
+    <Link to={ROUTES.login} onClick={isMobile ? toggleDrawer : undefined} style={{ textDecoration: 'none' }}>
       <CustomButton variant="outlined">Login</CustomButton>
     </Link>
   ));
@@ -107,7 +106,15 @@ export default function NavBar() {
     </>
   );
   return (
-    <Stack width="100%">
+    <Stack
+      width={isMidScreen ? '100%' : '80%'}
+      position="sticky"
+      px={isMobile ? 2 : (isMidScreen && 3) || 0}
+      pt={isMobile ? 0 : 2}
+      top={0}
+      zIndex={10}
+      sx={{ backgroundColor: '#1e2129' }}
+    >
       <Container>
         <LogoContainer>
           <StyledLink to={ROUTES.search}>Search Movies</StyledLink>
@@ -123,7 +130,6 @@ export default function NavBar() {
 
         </LinksContainer>
       </Container>
-      <Separator />
 
       <Drawer open={showDrawer} onClose={toggleDrawer} anchor="right">
         <Stack alignItems="center" pt={2} px={2}>
@@ -133,6 +139,7 @@ export default function NavBar() {
           {renderLinks()}
         </Stack>
       </Drawer>
+      <Separator mt={isMobile ? 0 : 2} />
     </Stack>
   );
 }

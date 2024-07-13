@@ -49,7 +49,8 @@ export const ROUTES = {
   rest: '*',
 };
 
-export const MIN_DESKTOP_WIDTH = 800;
+export const MIN_DESKTOP_WIDTH = 900;
 export const MEDIA_QUERIES = {
   isMobile: `(max-width:${MIN_DESKTOP_WIDTH}px)`,
+  isMidScreen: '(max-width:1200px)',
 };

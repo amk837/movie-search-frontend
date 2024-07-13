@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery } from '@mui/material';
 import { React, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextFieldsGenerator from '../../components/TextFieldsGenerator';
-import { ROUTES } from '../../constants';
+import { MEDIA_QUERIES, ROUTES } from '../../constants';
 import { register } from '../../services/authService';
 
 const StyledButton = styled(Button, {})`
@@ -15,21 +15,10 @@ const ErrorText = styled(Typography)`
   margin: 10px;
 `;
 
-const Container = styled.div`
-  width: 40%;
-  height: 500px;
-  display: flex;
-  margin: auto;
-  margin-top: 100px;
-  align-items: center;
-  flex-direction: column;
-  background: white;
-`;
-
 const FormContainer = styled.form`
   display: flex;
   margin-top: 60px;
-  width: 80%;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -37,6 +26,8 @@ const FormContainer = styled.form`
 
 function RegisterPage() {
   const formRef = useRef();
+
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -68,17 +59,30 @@ function RegisterPage() {
   };
 
   return (
-    <Container>
-      <Typography variant="h3">Register Page</Typography>
+    <Stack
+      sx={{ backgroundColor: '#2f3441', color: '#fff' }}
+      width={isMobile ? '100%' : '50%'}
+      p={2}
+      borderRadius={2.5}
+      m={!isMobile ? 'auto' : 0}
+      mt={20}
+      alignItems="center"
+    >
+
+      <Typography variant={isMobile ? 'h4' : 'h3'}>Register Page</Typography>
 
       <FormContainer onSubmit={onSubmit} ref={formRef}>
         {errorMessage && <ErrorText color="error">{errorMessage}</ErrorText>}
 
-        <TextFieldsGenerator fields={formFields} styles={{ width: '80%' }} />
+        <Box sx={{ backgroundColor: 'white', width: isMobile ? '100%' : '80%' }} borderRadius={2}>
+          <TextFieldsGenerator fields={formFields} styles={{ width: '100%' }} />
+        </Box>
 
-        <StyledButton variant="contained" type="submit">Register</StyledButton>
+        <StyledButton variant="contained" type="submit" sx={{ width: isMobile ? '100%' : '80%' }}>Register</StyledButton>
       </FormContainer>
-    </Container>
+
+      <Link to={ROUTES.login} style={{ textDecoration: 'none', color: '#fff' }}>Existing account?</Link>
+    </Stack>
   );
 }
 

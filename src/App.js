@@ -17,11 +17,12 @@ import { searchMovies, searchMoviesByCast, searchMoviesByDirector, searchMoviesB
 
 function App() {
   const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
+  const isMidScreen = useMediaQuery(MEDIA_QUERIES.isMidScreen);
 
   return (
-    <Stack px={isMobile ? 2 : 0} width="100%" alignItems="center">
-      <Stack width={isMobile ? '100%' : '80%'}>
-        <NavBar />
+    <Stack width="100%" alignItems="center">
+      <NavBar />
+      <Stack px={isMobile ? 2 : (isMidScreen && 3) || 0} width={isMidScreen ? '100%' : '80%'}>
 
         <Routes>
           <Route exact path={ROUTES.login} element={<LoginPage />} />

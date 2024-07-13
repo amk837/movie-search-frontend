@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery } from '@mui/material';
 import { React, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import TextFieldsGenerator from '../../components/TextFieldsGenerator';
-import { ROUTES } from '../../constants';
+import { MEDIA_QUERIES, ROUTES } from '../../constants';
 import { setToken } from '../../redux/nodes/entities/user/actions';
 import { login } from '../../services/authService';
 
@@ -17,21 +17,10 @@ const ErrorText = styled(Typography)`
   margin: 10px;
 `;
 
-const Container = styled.div`
-  width: 30%;
-  height: 500px;
-  display: flex;
-  margin: auto;
-  margin-top: 100px;
-  align-items: center;
-  flex-direction: column;
-  background: white;
-`;
-
 const FormContainer = styled.form`
   display: flex;
-  margin-top: 60px;
-  width: 80%;
+  margin-top: 32px;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -39,6 +28,8 @@ const FormContainer = styled.form`
 
 function LoginPage() {
   const formRef = useRef();
+
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -66,19 +57,29 @@ function LoginPage() {
   };
 
   return (
-    <Container>
-      <Typography variant="h3">Login Page</Typography>
+    <Stack
+      sx={{ backgroundColor: '#2f3441', color: '#fff' }}
+      width={isMobile ? '100%' : '50%'}
+      p={2}
+      borderRadius={2.5}
+      m={!isMobile ? 'auto' : 0}
+      mt={20}
+      alignItems="center"
+    >
+      <Typography variant={isMobile ? 'h4' : 'h3'} align="center">Login Page</Typography>
 
       <FormContainer onSubmit={onSubmit} ref={formRef}>
         {errorMessage && <ErrorText color="error">{errorMessage}</ErrorText>}
 
-        <TextFieldsGenerator fields={formFields} styles={{ width: '80%' }} />
+        <Box sx={{ backgroundColor: 'white', width: isMobile ? '100%' : '80%' }} borderRadius={2}>
+          <TextFieldsGenerator fields={formFields} styles={{ width: '100%' }} />
+        </Box>
 
-        <StyledButton variant="contained" type="submit">Log in</StyledButton>
+        <StyledButton variant="contained" type="submit" sx={{ width: isMobile ? '100%' : '80%' }}>Log in</StyledButton>
       </FormContainer>
 
-      <Link to={ROUTES.register}>No account?</Link>
-    </Container>
+      <Link to={ROUTES.register} style={{ textDecoration: 'none', color: '#fff' }}>No account?</Link>
+    </Stack>
   );
 }
 

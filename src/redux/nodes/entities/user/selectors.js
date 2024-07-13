@@ -1,4 +1,4 @@
-export const verifyAuth = (state) => !['', null, undefined].includes(state.user.token);
+export const verifyAuth = (state) => !state.user.token;
 
 export const getToken = (state) => state.user.token;
 

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { CalendarToday, StarRate, Whatshot } from '@mui/icons-material';
 import {
+  Box,
   Checkbox,
   FormControlLabel,
   MenuItem,
@@ -163,7 +164,7 @@ export default function SearchFilters({ filters, setFilters }) {
   const maxYear = new Date().getFullYear();
 
   return (
-    <FiltersContainer mt={2} p={2}>
+    <FiltersContainer mt={2} p={2} width="100%">
       <Stack direction={isMobile ? 'column' : 'row'} width="100%">
         <FilterContainer width={isMobile ? '100' : '25'}>
           <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Sort By</FilterHeading>
@@ -257,7 +258,7 @@ export default function SearchFilters({ filters, setFilters }) {
               </DropDown>
             </Stack>
             {isMobile ? <Typography>—</Typography> : null}
-            <Stack direction="row" spacing={isMobile ? 0 : 2} alignItems="center">
+            <Stack direction="row" spacing={isMobile ? 0 : 2} pt={isMobile ? 0 : 1} alignItems="center">
               {isMobile ? null : <YearLabel>To</YearLabel>}
 
               <div>
@@ -275,10 +276,10 @@ export default function SearchFilters({ filters, setFilters }) {
         </FilterContainer>
       </Stack>
 
-      <FilterContainer width="100" maxWidth={window.innerWidth - 32 * 2} overflow="hidden" abc={123}>
+      <Box width="100%">
         <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Genres</FilterHeading>
 
-        <Stack direction="row" maxWidth="100%" flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow="scroll">
+        <Stack direction="row" flex={1} flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
           {allGenres.map((genre) => (
             <CheckBoxContainer
               key={genre}
@@ -289,7 +290,7 @@ export default function SearchFilters({ filters, setFilters }) {
           ))}
 
         </Stack>
-      </FilterContainer>
+      </Box>
     </FiltersContainer>
   );
 }
