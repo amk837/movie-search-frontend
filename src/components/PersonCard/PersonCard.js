@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Typography, useMediaQuery } from '@mui/material';
 import styled from '@emotion/styled';
 import PropType from 'prop-types';
+import { MEDIA_QUERIES } from '../../constants';
 
 const Card = styled(Link)`
-  min-width: 20%;
-  max-width: 20%;
+  min-width: ${({ width }) => width};
+  max-width: ${({ width }) => width};
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -26,13 +27,14 @@ const Title = styled(Typography)`
   text-overflow: ellipsis;
   white-space: nowrap;
   color: white;
-  font-size: 1vw;
   width: 90%;
 `;
 
 export default function PersonCard({ name, character, img, href }) {
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
+
   return (
-    <Card to={href}>
+    <Card to={href} width={isMobile ? '150px' : '20%'}>
       <Image src={img || '/movie-image-placeholder.png'} alt={name} />
 
       <Title variant="subtitle2" title={name}>
