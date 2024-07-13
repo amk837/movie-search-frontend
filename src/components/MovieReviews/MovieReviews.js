@@ -52,13 +52,13 @@ export default function MovieReviews({ id }) {
   }, [id]);
   return (
     <MainContainer>
-      <HeadingContainer variant="h6" ml={isMobile ? 0 : '10.75%'}>REVIEWS</HeadingContainer>
+      <HeadingContainer variant="h6">REVIEWS</HeadingContainer>
 
       {state.loading && <CircularProgress />}
 
       {!state.loading && state.reviews.map(({ name, avatar, review }, index, arr) => (
         <ReviewContainer
-          width={isMobile ? '100%' : '79%'}
+          width="100%"
           direction={isMobile ? 'column' : 'row'}
           m={isMobile ? 0 : 1.25}
           mt={isMobile ? 2 : 0}
