@@ -1,38 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { Button, CircularProgress, Dialog, Stack, Typography, useMediaQuery } from '@mui/material';
 import { number } from 'prop-types';
 import { getReviews } from '../../services/movieService';
 import CustomPagination from '../CustomPagination';
+import { MEDIA_QUERIES } from '../../constants';
 
 const ReviewTextContainer = styled(Typography)`
-  border: solid 10px;
-  border-color: #8e95a5;
-  border-radius: 0px 10px 10px 0px;
   color: white;
   padding: 10px;
-  width: 80%;
 `;
 
 const ReviewerDetailsContainer = styled(Stack)`
   align-items: center;
-  border: solid 10px;
-  border-color: #8e95a5;
-  border-radius: 10px 0px 0px 10px;
   justify-content: center;
-  width: 20%;
 `;
 
 const ReviewContainer = styled(Stack)`
-  background: 1d1d1d;
-  flex-direction: row;
-  margin: 10px;
-  width: 79%;
+  background: #1e2129;
+  border: solid 10px;
+  border-color: #8e95a5;
+  border-radius: 10px;
 `;
 
 const HeadingContainer = styled(Typography)`
   align-self: flex-start;
-  margin-left: 10.75%;
 `;
 
 const MainContainer = styled(Stack)`
@@ -40,7 +32,10 @@ const MainContainer = styled(Stack)`
   justify-content: center
 `;
 export default function MovieReviews({ id }) {
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMidScreen);
   const [state, setState] = useState({ loading: true, pages: 5, reviews: [] });
+  const [showReview, setShowReview] = useState(null);
+  const [showDescriptionButton, setShowDescriptionButton] = useState({});
 
   const loadReviews = (page) => {
     getReviews(id, page).then((reviews) => {
@@ -57,19 +52,39 @@ export default function MovieReviews({ id }) {
   }, [id]);
   return (
     <MainContainer>
-      <HeadingContainer variant="h6">REVIEWS</HeadingContainer>
+      <HeadingContainer variant="h6" ml={isMobile ? 0 : '10.75%'}>REVIEWS</HeadingContainer>
 
       {state.loading && <CircularProgress />}
 
-      {!state.loading && state.reviews.map(({ name, avatar, review }) => (
-        <ReviewContainer key={name} data-testid="reviews">
-          <ReviewerDetailsContainer>
-            <img src={avatar} alt="NA" width="50%" />
+      {!state.loading && state.reviews.map(({ name, avatar, review }, index, arr) => (
+        <ReviewContainer
+          width={isMobile ? '100%' : '79%'}
+          direction={isMobile ? 'column' : 'row'}
+          m={isMobile ? 0 : 1.25}
+          mt={isMobile ? 2 : 0}
+          key={name}
+          data-testid="reviews"
+        >
+          <ReviewerDetailsContainer width={isMobile ? '100%' : '20%'}>
+            <img src={avatar || '/movie-image-placeholder.png'} alt="NA" width={isMobile ? '25%' : '50%'} />
 
             <Typography>{name}</Typography>
           </ReviewerDetailsContainer>
 
-          <ReviewTextContainer>{review}</ReviewTextContainer>
+          <ReviewTextContainer
+            height={showDescriptionButton[name] ? 200 : undefined}
+            ref={(node) => {
+              if (!node) return;
+              const isLonger = node.clientHeight > 200;
+              if (isLonger) setShowDescriptionButton({ ...showDescriptionButton, [name]: true });
+            }}
+            width={isMobile ? '100%' : '80%'}
+            overflow={showDescriptionButton[name] ? 'hidden' : undefined}
+            sx={{ WebkitLineClamp: showDescriptionButton[name] ? 8 : undefined, display: '-webkit-box', '-webkit-box-orient': 'vertical' }}
+          >
+            {review}
+          </ReviewTextContainer>
+          {showDescriptionButton[name] ? <Button onClick={() => setShowReview(arr[index])}>View full description</Button> : null}
         </ReviewContainer>
       ))}
 
@@ -78,6 +93,29 @@ export default function MovieReviews({ id }) {
       )}
 
       {state.pages > 1 && <CustomPagination pages={state.pages} onPageChange={onPageChange} />}
+
+      {showReview ? (
+        <Dialog open={!!showReview} onClose={() => setShowReview(null)} PaperProps={{ sx: { borderRadius: '10px' } }}>
+          <ReviewContainer
+            width={isMobile ? '100%' : '79%'}
+            direction="column"
+            key={showReview.name}
+            data-testid="reviews"
+            maxHeight={500}
+            overflow="scroll"
+          >
+            <ReviewerDetailsContainer width={isMobile ? '100%' : '20%'}>
+              <img src={showReview.avatar || '/movie-image-placeholder.png'} alt="NA" width={isMobile ? '25%' : '50%'} />
+
+              <Typography color="#00acc1">{showReview.name}</Typography>
+            </ReviewerDetailsContainer>
+
+            <ReviewTextContainer width="100%">
+              {showReview.review}
+            </ReviewTextContainer>
+          </ReviewContainer>
+        </Dialog>
+      ) : null}
     </MainContainer>
   );
 }

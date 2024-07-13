@@ -15,10 +15,10 @@ export default function CastAndDirector({ castAndDirector }) {
     <>
       {castAndDirector.map((people, index) => (
         <DetailContainer key={index}>
-          <Typography color="#8e95a5" width="20%">
+          <Typography color="#8e95a5" width={80}>
             {index === 0 ? 'Cast' : 'Director'}
           </Typography>
-          <Stack flexDirection="row" width="80%" overflow="auto hidden">
+          <Stack flexDirection="row" flex={1} overflow="auto hidden">
             {people.map((person) => (
               /* eslint-disable-next-line react/jsx-props-no-spreading */
               <PersonCard {...person} key={person.name} />

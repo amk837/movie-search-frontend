@@ -95,7 +95,7 @@ const extractReviewData = ({
   avatar:
     avatar_path && avatar_path.startsWith('/https')
       ? avatar_path.slice(1)
-      : `${IMAGE_API_BASE}/w185${avatar_path}`,
+      : (avatar_path && `${IMAGE_API_BASE}/w185${avatar_path}`) || null,
   date: updated_at,
 });
 

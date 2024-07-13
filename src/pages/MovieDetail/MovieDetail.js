@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { Checkbox, CircularProgress, FormControlLabel, Stack, Typography } from '@mui/material';
+import { Checkbox, CircularProgress, FormControlLabel, Stack, Typography, useMediaQuery } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MovieList from '../../components/MovieList';
@@ -11,10 +11,9 @@ import FavoritesContext from '../../context/FavoritesContext';
 import { getRefreshToken, getToken, verifyAuth } from '../../redux/nodes/entities/user/selectors';
 import { useTokenService } from '../../services/authService';
 import CastAndDirector from '../../components/CastAndDirector/CastAndDirector';
+import { MEDIA_QUERIES } from '../../constants';
 
 const Image = styled.img`
-  width: 25%;
-  height: 50%;
   border-radius: 20px;
   margin: 0.5%;
 `;
@@ -44,7 +43,6 @@ const CustomLink = styled(Link)`
 `;
 
 const MovieDetailsContainer = styled(Stack)`
-  flex-direction: row;
   width: 100%;
 `;
 
@@ -73,6 +71,7 @@ const FavoriteBoxContainer = styled(FormControlLabel)`
   margin: 0px;
 `;
 export default function MovieDetail() {
+  const isMobile = useMediaQuery(MEDIA_QUERIES.isMobile);
   const id = parseInt(useParams().id, 10);
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -108,14 +107,14 @@ export default function MovieDetail() {
     });
   }, [id]);
   return (
-    <Stack color="#00acc1" key={id}>
+    <Stack color="#00acc1" key={id} flex={1}>
       {!movieDetails.loading && movieDetails.found && (
         <>
-          <MovieDetailsContainer>
-            <Image src={movieDetails.img} alt={movieDetails.title} />
-            <Stack width="70%" margin={3}>
+          <MovieDetailsContainer direction={isMobile ? 'column' : 'row'}>
+            <Image src={movieDetails.img} width={isMobile ? '100%' : '25%'} height={isMobile ? '50%' : '50%'} alt={movieDetails.title} />
+            <Stack width={isMobile ? '100%' : '70%'} margin={isMobile ? 0 : 3} overflow="hidden" pt={isMobile ? 1 : 0}>
               <Typography variant="h5">{movieDetails.title}</Typography>
-              <Typography variant="subtitle1" color="#8e95a5">
+              <Typography variant="subtitle1" color="#8e95a5" pt={isMobile ? 1 : 0}>
                 {movieDetails.overview}
               </Typography>
               <DetailContainer>
@@ -146,17 +145,19 @@ export default function MovieDetail() {
               )}
 
               <DetailContainer>
-                <Typography color="#8e95a5" width="20%">Release Date</Typography>
+                <Typography color="#8e95a5" width={80}>Release</Typography>
                 <Typography>{movieDetails.releaseDate}</Typography>
               </DetailContainer>
               <DetailContainer>
-                <Typography color="#8e95a5" width="20%">Genres</Typography>
-                {movieDetails.genres.map(({ name, id }, index) => (
-                  <React.Fragment key={name}>
-                    {index > 0 && ','}
-                    <CustomLink to={`/genre/${id}/${name}`} index={index}>{name}</CustomLink>
-                  </React.Fragment>
-                ))}
+                <Typography color="#8e95a5" width={80}>Genres</Typography>
+                <Stack direction="row" flex={1} overflow={isMobile ? 'scroll' : undefined} pr={isMobile ? 2 : 0}>
+                  {movieDetails.genres.map(({ name, id }, index) => (
+                    <React.Fragment key={name}>
+                      {index > 0 && ','}
+                      <CustomLink to={`/genre/${id}/${name}`} index={index}>{name}</CustomLink>
+                    </React.Fragment>
+                  ))}
+                </Stack>
               </DetailContainer>
 
               <CastAndDirector castAndDirector={[movieDetails.cast, movieDetails.director]} />

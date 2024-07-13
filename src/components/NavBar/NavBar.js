@@ -67,6 +67,8 @@ export default function NavBar() {
   const dispatch = useDispatch();
 
   const toggleDrawer = () => {
+    if (!isMobile) return;
+
     setShowDrawer(!showDrawer);
   };
   const onLogout = () => {
