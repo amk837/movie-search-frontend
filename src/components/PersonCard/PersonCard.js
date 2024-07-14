@@ -42,7 +42,7 @@ export default function PersonCard({ name, character, img, href }) {
       </Title>
 
       {character && (
-        <Title style={{ color: '#8e95a5' }} title={character}>
+        <Title variant="caption" style={{ color: '#8e95a5' }}>
           {`as ${character}`}
         </Title>
       )}

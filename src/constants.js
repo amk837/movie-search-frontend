@@ -13,6 +13,7 @@ export const GET_MOVIE_API = `${MOVIE_API_BASE}/id?api_key=${API_KEY}`;
 export const GET_CREDIT_API = `${MOVIE_API_BASE}/id/credits?api_key=${API_KEY}`;
 export const GET_SIMILAR_MOVIES_API = `${MOVIE_API_BASE}/id/similar?api_key=${API_KEY}&page=`;
 export const GET_REVIEWS_API = `${MOVIE_API_BASE}/id/reviews?api_key=${API_KEY}&page=`;
+export const GET_MOVIE_VIDEOS_API = `${MOVIE_API_BASE}/id/videos?api_key=${API_KEY}`;
 
 export const SEARCH_MOVIES_API = process.env.REACT_APP_SEARCH_API_DOMAIN;
 

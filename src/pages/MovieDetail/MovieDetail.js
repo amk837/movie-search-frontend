@@ -12,6 +12,7 @@ import { getRefreshToken, getToken, verifyAuth } from '../../redux/nodes/entitie
 import { useTokenService } from '../../services/authService';
 import CastAndDirector from '../../components/CastAndDirector/CastAndDirector';
 import { MEDIA_QUERIES } from '../../constants';
+import MovieVideos from '../../components/MovieVideos/MovieVideos';
 
 const Image = styled.img`
   border-radius: 20px;
@@ -110,6 +111,7 @@ export default function MovieDetail() {
     <Stack color="#00acc1" key={id} flex={1}>
       {!movieDetails.loading && movieDetails.found && (
         <>
+          <MovieVideos movieId={id} />
           <MovieDetailsContainer direction={isMobile ? 'column' : 'row'}>
             <Image src={movieDetails.img} width={isMobile ? '100%' : '25%'} height={isMobile ? '50%' : '50%'} alt={movieDetails.title} />
             <Stack width={isMobile ? '100%' : '70%'} margin={isMobile ? 0 : 3} overflow="hidden" pt={isMobile ? 1 : 0}>

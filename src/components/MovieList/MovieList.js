@@ -84,7 +84,7 @@ function MovieList({ api, title, moviesList, showLoader }) {
       )}
 
       <Stack direction="row" flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
-        {isLoading || !movies.length ? (
+        {isLoading ? (
           DUMMY_CARDS.map((key) => <MovieCardSkeleton key={key} />)
         ) : (
           movies.map((movie) => (

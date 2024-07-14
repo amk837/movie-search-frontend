@@ -17,6 +17,7 @@ import {
   ADD_TO_FAVORITES_API,
   REMOVE_FROM_FAVORITES_API,
   ROUTES,
+  GET_MOVIE_VIDEOS_API,
 } from '../constants';
 
 const defaultHeader = {
@@ -163,3 +164,9 @@ export const removeFromFavorites = (movieId, token) => fetch(REMOVE_FROM_FAVORIT
   .catch((err) => {
     throw err;
   });
+
+export const getMovieVideos = async (id) => {
+  const res = await fetch(GET_MOVIE_VIDEOS_API.replace('id', id));
+
+  return res.json();
+};

@@ -111,6 +111,7 @@ export default function SearchFilters({ filters, setFilters }) {
   const [allGenres, setAllGenres] = useState(['Action']);
 
   const onSortByChange = (field) => () => {
+    console.log('sortBy', field);
     setFilters({ ...filters, sortBy: field });
   };
 
@@ -138,9 +139,9 @@ export default function SearchFilters({ filters, setFilters }) {
     });
   };
 
-  const onPopularityChange = (event) => {
-    setFilters({ ...filters, popularity: event.target.value });
-  };
+  // const onPopularityChange = (event) => {
+  //   setFilters({ ...filters, popularity: event.target.value });
+  // };
 
   const onSortByHover = (field) => () => {
     setSortByHover(field);
@@ -166,26 +167,35 @@ export default function SearchFilters({ filters, setFilters }) {
   return (
     <FiltersContainer mt={2} p={2} width="100%">
       <Stack direction={isMobile ? 'column' : 'row'} width="100%">
-        <FilterContainer width={isMobile ? '100' : '25'}>
-          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Sort By</FilterHeading>
+        <FilterContainer width={isMobile ? '100' : '20'}>
 
-          <Stack direction={isMobile ? 'row' : 'column'}>
-            {sortByFilters.map(([filterName, filterTitle, Icon]) => (
-              <RowContainer key={filterName}>
-                <SortByFilterContainer
-                  selected={filters.sortBy === filterName}
-                  onMouseEnter={onSortByHover(filterName)}
-                  onMouseLeave={onSortByHoverExit}
-                  onClick={onSortByChange(filterName)}
-                >
-                  <Icon style={{ height: '100%' }} />
+          <Stack direction={isMobile ? 'row' : 'column'} justifyContent={isMobile ? 'space-between' : 'start'}>
+            <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Sort By</FilterHeading>
+            {isMobile
+              ? (
+                <DropDown value={`${filters.sortBy}`} onChange={(e) => { onSortByChange(e.target.value)(); }} sx={{ maxWidth: 120 }}>
+                  {sortByFilters.map(([filterName, filterTitle]) => (
+                    <MenuItem value={filterName} key={filterName}>
+                      {filterTitle}
+                    </MenuItem>
+                  ))}
+                </DropDown>
+              ) : sortByFilters.map(([filterName, filterTitle, Icon]) => (
+                <RowContainer key={filterName}>
+                  <SortByFilterContainer
+                    selected={filters.sortBy === filterName}
+                    onMouseEnter={onSortByHover(filterName)}
+                    onMouseLeave={onSortByHoverExit}
+                    onClick={onSortByChange(filterName)}
+                  >
+                    <Icon style={{ height: '100%' }} />
 
-                  <SortByLabel>{filterTitle}</SortByLabel>
-                </SortByFilterContainer>
+                    <SortByLabel>{filterTitle}</SortByLabel>
+                  </SortByFilterContainer>
 
-                {isMobile ? null : <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />}
-              </RowContainer>
-            ))}
+                  <TriangleShape show={sortByHover === filterName || filters.sortBy === filterName} />
+                </RowContainer>
+              ))}
           </Stack>
 
           <RowContainer>
@@ -205,7 +215,7 @@ export default function SearchFilters({ filters, setFilters }) {
         </FilterContainer>
 
         <FilterContainer
-          width={isMobile ? '100' : '25'}
+          width={isMobile ? '100' : '20'}
           direction={isMobile ? 'row' : 'column'}
           alignItems="center"
           justifyContent={isMobile ? 'space-between' : undefined}
@@ -220,7 +230,7 @@ export default function SearchFilters({ filters, setFilters }) {
           </DropDown>
         </FilterContainer>
 
-        <FilterContainer
+        {/* <FilterContainer
           width={isMobile ? '100' : '25'}
           direction={isMobile ? 'row' : 'column'}
           alignItems="center"
@@ -235,10 +245,10 @@ export default function SearchFilters({ filters, setFilters }) {
               </MenuItem>
             ))}
           </DropDown>
-        </FilterContainer>
+        </FilterContainer> */}
 
         <FilterContainer
-          width={isMobile ? '100' : '25'}
+          width={isMobile ? '100' : '20'}
           direction={isMobile ? 'row' : 'column'}
           alignItems="center"
           justifyContent={isMobile ? 'space-between' : undefined}
@@ -274,23 +284,41 @@ export default function SearchFilters({ filters, setFilters }) {
           </Stack>
 
         </FilterContainer>
+        {!isMobile ? (
+          <Box width="40%" pl={2}>
+            <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Genres</FilterHeading>
+
+            <Stack direction="row" flex={1} flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
+              {allGenres.map((genre) => (
+                <CheckBoxContainer
+                  key={genre}
+                  control={<Checkbox onClick={onGenresChange(genre)} />}
+                  title={genre}
+                  label={genre}
+                />
+              ))}
+
+            </Stack>
+          </Box>
+        ) : null}
       </Stack>
 
-      <Box width="100%">
-        <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Genres</FilterHeading>
+      {isMobile ? (
+        <Stack width="100%" direction="row" spacing={2} alignItems="center">
+          <FilterHeading variant={isMobile ? 'h5' : 'h4'}>Genres</FilterHeading>
+          <Stack direction="row" flex={1} flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
+            {allGenres.map((genre) => (
+              <CheckBoxContainer
+                key={genre}
+                control={<Checkbox onClick={onGenresChange(genre)} />}
+                title={genre}
+                label={genre}
+              />
+            ))}
 
-        <Stack direction="row" flex={1} flexWrap={isMobile ? 'nowrap' : 'wrap'} overflow={isMobile ? 'scroll' : undefined}>
-          {allGenres.map((genre) => (
-            <CheckBoxContainer
-              key={genre}
-              control={<Checkbox onClick={onGenresChange(genre)} />}
-              title={genre}
-              label={genre}
-            />
-          ))}
-
+          </Stack>
         </Stack>
-      </Box>
+      ) : null}
     </FiltersContainer>
   );
 }
