@@ -111,7 +111,6 @@ export default function SearchFilters({ filters, setFilters }) {
   const [allGenres, setAllGenres] = useState(['Action']);
 
   const onSortByChange = (field) => () => {
-    console.log('sortBy', field);
     setFilters({ ...filters, sortBy: field });
   };
 
