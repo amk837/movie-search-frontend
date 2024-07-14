@@ -39,7 +39,7 @@ function MovieVideos({ movieId }) {
 
       <Stack direction={isMobile ? 'column' : 'row'} width="100%" spacing={2}>
         {movieData ? (
-          <Box flex={1} width={isMobile ? '100vw' : undefined} height={isMobile ? '50vh' : '60vh'} alignSelf="center">
+          <Box flex={isMobile ? undefined : 1} width={isMobile ? '100vw' : undefined} height={isMobile ? '60vw' : '60vh'} alignSelf="center">
             <iframe
               width="100%"
               height="100%"
