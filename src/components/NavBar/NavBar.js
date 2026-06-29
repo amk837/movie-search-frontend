@@ -86,10 +86,9 @@ export default function NavBar() {
       {isMobile ? <StyledLink to={ROUTES.favorites} onClick={toggleDrawer}>My Favorites</StyledLink> : null}
     </>
   ) : (
-    null
-    // <Link to={ROUTES.login} onClick={isMobile ? toggleDrawer : undefined} style={{ textDecoration: 'none' }}>
-    //   <CustomButton variant="outlined">Login</CustomButton>
-    // </Link>
+    <Link to={ROUTES.login} onClick={isMobile ? toggleDrawer : undefined} style={{ textDecoration: 'none' }}>
+      <CustomButton variant="outlined">Login</CustomButton>
+    </Link>
   ));
 
   const renderLinks = () => (
@@ -120,7 +119,7 @@ export default function NavBar() {
     >
       <Container>
         <LogoContainer>
-          <StyledLink to={ROUTES.home}>Movies</StyledLink>
+          <StyledLink to={ROUTES.search}>Search Movies</StyledLink>
         </LogoContainer>
         <LinksContainer>
           {isMobile ? (
